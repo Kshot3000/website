@@ -25,13 +25,13 @@ function MockupBrowserIllustration({ className }: { className?: string }) {
               </div>
               <div className="from-foreground/5 to-foreground/2 dark:from-foreground/10 dark:to-foreground/5 text-muted-foreground border-border/10 absolute top-1.5 left-1/2 flex min-w-[240px] -translate-x-1/2 items-center justify-center gap-2 rounded-md border-b bg-linear-to-t px-3 py-1.5 text-center text-xs">
                 <Link className="size-3" />
-                <p>marketplace.octa.space</p>
+                <p>cube.octa.computer/marketplace/compute</p>
               </div>
             </div>
             <Screenshot
               srcLight="/img/marketplace1.png"
               srcDark="/img/marketplace1.png"
-              alt="Launch UI app screenshot"
+              alt="OctaSpace marketplace screenshot"
               width={1340}
               height={820}
             />

@@ -22,6 +22,7 @@ interface TileProps {
   visual: ReactNode;
   size?: string;
   icon?: ReactNode;
+  href?: string;
 }
 
 interface BentoGridProps {
@@ -143,7 +144,7 @@ export default function BentoGrid({
           <div className="grid grid-cols-12 gap-4">
             {tiles.map((tile, index) => (
               <Tile key={index} className={tile.size}>
-                <TileLink />
+                {tile.href && <TileLink href={tile.href} />}
                 <TileContent>
                   {tile.icon && tile.icon}
                   <TileTitle>{tile.title}</TileTitle>

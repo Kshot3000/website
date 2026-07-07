@@ -2,14 +2,15 @@
 const unusedImports = require("eslint-plugin-unused-imports");
 const simpleImportSort = require("eslint-plugin-simple-import-sort");
 const tsPlugin = require("@typescript-eslint/eslint-plugin");
-const nextPlugin = require("eslint-plugin-next");
+const nextPlugin = require("@next/eslint-plugin-next");
+const tsParser = require("@typescript-eslint/parser");
 
 module.exports = [
   {
     ignores: ["node_modules", ".next", "out"],
 
     languageOptions: {
-      parser: "@typescript-eslint/parser",
+      parser: tsParser,
       parserOptions: {
         ecmaVersion: "latest",
         sourceType: "module",
@@ -21,7 +22,7 @@ module.exports = [
       "unused-imports": unusedImports,
       "simple-import-sort": simpleImportSort,
       "@typescript-eslint": tsPlugin,
-      next: nextPlugin,
+      "@next/next": nextPlugin,
     },
 
     rules: {
@@ -44,7 +45,8 @@ module.exports = [
       "simple-import-sort/exports": "error",
 
       // Next.js recommended rules
-      "next/core-web-vitals": "error",
+      ...nextPlugin.configs.recommended.rules,
+      ...nextPlugin.configs["core-web-vitals"].rules,
     },
   },
 ];

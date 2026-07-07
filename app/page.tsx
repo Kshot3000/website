@@ -1,26 +1,16 @@
-  "use client";
-  import { useEffect, useState } from "react";
-  import Head from "next/head";
+  import type { Metadata } from "next";
+  import type { CSSProperties } from "react";
   import {
-    Lock,
-    Network,
-    User,
-    ArrowRight,
-    Cloud,
     Box,
     Terminal,
     Download,
-    Server,
     Settings,
-    Database,
     MonitorCog,
     Globe,
-    Webhook,
     Rocket,
     Shield,
     Share2,
     ListChecks,
-    Tag,
     Blocks,
     Power,
     Logs,
@@ -29,164 +19,64 @@
   } from "lucide-react";
   
   import Navbar from "../components/sections/navbar/sticky";
-  import { Badge } from "../components/ui/badge";
-  import Link from "next/link"; // Make sure Link is imported
-  import { ArrowRightIcon } from "lucide-react"; // If you use this in the badge
   import Hero from "../components/sections/hero/layers";
   import { SocialIcons } from "../components/sections/footer/socials";
-  import Stats from "../components/sections/stats/grid-boxed";
-  import Stats2 from "../components/sections/stats/default";
-  import LogosMarquee from "../components/sections/logos/marquee2";
   import BentoGrid from "../components/sections/bento-grid/3-rows-top";
   import FeatureIllustrationBottom from "../components/sections/feature/illustration-bottom";
   import FeatureStickyLeft from "../components/sections/feature/sticky-left";
   import FeatureStickyRight from "../components/sections/feature/sticky-right desktop";
   import Items from "../components/sections/items/default-brand";
-  import TestimonialsGrid from "../components/sections/testimonials/grid";
-  import Pricing from "../components/sections/pricing/custom";
-  import FAQ from "../components/sections/faq/static";
   import CTA from "../components/sections/cta/default";
   import Footer from "../components/sections/footer/5-columns";
   import OctaLogo from "../components/logos/octa";
-  import Catalog from "../components/logos/catalog";
-  import CoreOS from "../components/logos/coreos";
-  import CarouselLarge from "@/components/sections/carousel/small";
   import TabsLeft from "../components/sections/tabs/top";
-  import Peregrin from "../components/logos/peregrin";
-  import PictelAI from "../components/logos/pictelai";
   import { Mockup, MockupFrame } from "../components/ui/mockup";
   import Screenshot from "../components/ui/screenshot";
-  import RisingSmallIllustration from "../components/illustrations/rising-small";
   import RisingLargeIllustration from "../components/illustrations/rising-large";
   import MockupBrowserIllustration from "../components/illustrations/mockup-browser";
   import MockupResponsiveTopIllustration from "../components/illustrations/mockup-responsive-top";
   import PipelineIllustration from "../components/illustrations/pipeline"
-  import ChatIllustration from "../components/illustrations/chat";
   import SshTerminalIllustration from "../components/illustrations/terminal";
   import MockupMobileIllustration from "../components/illustrations/mockup-mobile";
-  import { Button } from "../components/ui/button";
-  import { Input } from "../components/ui/input";
   import TilesIllustration from "@/components/illustrations/tiles";
-import Github from "@/components/logos/github";
-import { Play } from "next/font/google";
+  import {
+    NetworkPricing,
+    NetworkSnapshotProvider,
+    NetworkStatsGridBoxed,
+    NetworkStatsStrip,
+  } from "@/components/sections/network-snapshot";
+  import { getOctaNetworkSnapshot } from "@/lib/octa-network";
+  import { siteConfig } from "@/config/site";
 
-  
-export default function MCPServerPage() {
-  const [statsItems, setStatsItems] = useState<any[]>([]);
-  const [stats2Items, setStats2Items] = useState<any[]>([]);
-  const [plans, setPlans] = useState<any[]>([]);
-  const [loadingStats, setLoadingStats] = useState(true);
+export const metadata: Metadata = {
+  title: "OctaSpace - Decentralized GPU Cloud, AI & Compute Platform",
+  description:
+    "Run AI, render, and scale globally with decentralized GPU power, ready-made cloud apps, pay-as-you-go pricing, and built-in privacy solutions.",
+  alternates: {
+    canonical: siteConfig.url,
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: siteConfig.name,
+    url: siteConfig.url,
+    title: "OctaSpace - Decentralized GPU Cloud, AI & Compute Platform",
+    description:
+      "Access decentralized GPU cloud infrastructure for AI, rendering, containers, VMs, and privacy-focused workloads.",
+    images: [
+      {
+        url: siteConfig.ogImage,
+        width: 1200,
+        height: 630,
+        alt: siteConfig.name,
+      },
+    ],
+  },
+};
 
-  useEffect(() => {
-    async function fetchStats() {
-      try {
-        const res = await fetch("https://api.octa.computer/network");
-        const data = await res.json();
+export default async function MCPServerPage() {
+  const networkSnapshot = await getOctaNetworkSnapshot();
 
-        // Stats section
-        const items = [
-          {
-            value: data.power?.gpus?.toString(),
-            label: "Total GPUs:",
-            description: "Available for Rent",
-          },
-          {
-            value: data.nodes?.count?.toString(),
-            label: "Total nodes:",
-            description: "Offering Compute Power",
-          },
-          {
-            value: data.platform?.users?.toString(),
-            label: "Registered users:",
-            description: "Users & Growing",
-          },
-        ];
-        
-        setStatsItems(items);
-
-        // Stats2 section
-          const items2 = [
-            {
-              value: Math.round(data.power?.tflops || 0).toString(),
-              label: "Raw Power Unleashed",
-              description: "Global TFLOPS on Demand",
-            },
-            {
-              value: data.nodes?.locations?.toString(),
-              label: "Global Reach",
-              description: "Decentralized Locations",
-            },
-            {
-              value: data.marketplace?.total_sessions?.toString(),
-              label: "Compute Sessions Launched",
-              description: "Sessions",
-            },
-          ];
-          setStats2Items(items2);
-
-
-        // Pricing section → normalize for PricingColumnProps
-        const gpuPriority: Record<string, number> = {
-          "NVIDIA H100 80GB HBM3": 100,
-          "NVIDIA A100-SXM4-40GB": 99,
-          "NVIDIA RTX A6000": 98,
-          "NVIDIA GeForce RTX 5090": 90,
-          "NVIDIA GeForce RTX 4090": 85,
-          "NVIDIA GeForce RTX 5080": 80,
-          "NVIDIA GeForce RTX 4080": 75,
-          "NVIDIA GeForce RTX 4070": 70,
-          "NVIDIA GeForce RTX 3090": 60,
-          "NVIDIA GeForce RTX 5070": 50,
-        };
-
-        const gpuPlans = Object.entries(data.marketplace.gpus)
-          .map(([gpuName, gpuData]: [string, any]) => {
-            // ✅ Strip NVIDIA + GeForce
-            const cleanName = gpuName
-              .replace(/NVIDIA\s*/g, "")
-              .replace(/GeForce\s*/g, "")
-              .trim();
-
-            return {
-              name: cleanName, // ✅ use cleaned name
-              description: `${gpuData.count} available`,
-              price: gpuData.avg_price,
-              priceNote: "per hour",
-              features: [
-                `Average price: ${gpuData.avg_price} $/hr`,
-                `Available count: ${gpuData.count}`,
-                "Flexible rental terms",
-                "Global GPU marketplace",
-              ],
-              cta: {
-                label: "Rent now",
-                href: "https://marketplace.octa.space/compute",
-                variant: "glow",
-              },
-              variant: "default",
-              priority: gpuPriority[gpuName] || 0, // keep original for sorting
-            };
-          })
-          // Sort by priority (highest first), then by availability
-          .sort((a, b) => {
-            if (b.priority === a.priority) {
-              const countA = parseInt(a.features[1].match(/\d+/)?.[0] || "0");
-              const countB = parseInt(b.features[1].match(/\d+/)?.[0] || "0");
-              return countB - countA;
-            }
-            return b.priority - a.priority;
-          });
-
-        setPlans(gpuPlans);
-        setLoadingStats(false);
-      } catch (err) {
-        console.error("Failed to fetch network stats:", err);
-        setLoadingStats(false);
-      }
-    }
-
-    fetchStats();
-  }, []);
     return (
       <div
         className="flex flex-col"
@@ -198,17 +88,9 @@ export default function MCPServerPage() {
             "--background": "var(--background-octa)",
             "--muted": "var(--background-titanium)",
             "--radius": "var(--radius-default)",
-          } as React.CSSProperties
+          } as CSSProperties
         }
       >
-        <Head>
-          <title>OctaSpace – Decentralized AI & Cloud Compute</title>
-          <meta
-            name="description"
-            content="Run AI, render, and scale globally with GPU power, ready-made apps, and built-in privacy solutions."
-          />
-          <link rel="canonical" href="https://octa.space/" />
-        </Head>
         <Navbar
           logo={<OctaLogo className="h-8 w-auto" />}
           name="OctaSpace"
@@ -216,27 +98,21 @@ export default function MCPServerPage() {
 
             {
               text: "Get Started",
-              href: "https://marketplace.octa.space/",
+              href: "https://cube.octa.computer/marketplace/compute",
               isButton: true,
               variant: "outline",
             },
           ]}
         />
+        <NetworkSnapshotProvider initialSnapshot={networkSnapshot}>
         <main className="flex-1">
           <Hero
             title="Unleash AI & Cloud Compute. Powered by a Decentralized GPU Network."
             description="Run AI, render, and scale globally with GPU power, ready-made apps, and built-in privacy solutions."
           />
-          <Stats
+          <NetworkStatsGridBoxed
             title="The Scale You Need. Ready When You Need It."
             description="From AI model training to complex simulations, thousands of users trust our decentralized compute infrastructure to provide the power they need. Our robust and growing system ensures you always have access to a massive pool of global compute resources."
-            items={statsItems.length ? statsItems : [
-              {
-                value: "…", // fallback if stats not loaded yet
-                label: "Loading...",
-                description: "",
-              },
-            ]}
           />
           <BentoGrid
             title="Your All-in-One Decentralized Platform."
@@ -272,6 +148,7 @@ export default function MCPServerPage() {
                 ),
                 icon: <Rocket className="text-muted-foreground size-6 stroke-1" />,
                 size: "col-span-12 md:col-span-6 lg:col-span-5",
+                href: "https://cube.octa.computer/marketplace/apps",
               },
               {
                 title: "Containers & VMs, Your Choice",
@@ -289,6 +166,7 @@ export default function MCPServerPage() {
                   <Terminal className="text-muted-foreground size-6 stroke-1" />
                 ),
                 size: "col-span-12 md:col-span-6 lg:col-span-7",
+                href: "https://cube.octa.computer/marketplace/apps",
               },
               {
                 title: "Rendering built to scale",
@@ -311,6 +189,7 @@ export default function MCPServerPage() {
                 ),
                 icon: <Box className="text-muted-foreground size-6 stroke-1" />,
                 size: "col-span-12 md:col-span-6 lg:col-span-6",
+                href: "https://cube.octa.computer/render",
               },
               {
                 title: "OctaVPN. True Privacy, No Subscriptions.",
@@ -328,6 +207,7 @@ export default function MCPServerPage() {
                   <Shield className="text-muted-foreground size-6 stroke-1" />
                 ),
                 size: "col-span-12 md:col-span-6 lg:col-span-6",
+                href: "https://cube.octa.computer/marketplace/vpn",
               },
               {
                 title: "The P2P Principle. Fair & Direct.",
@@ -345,6 +225,7 @@ export default function MCPServerPage() {
                   <Share2 className="text-muted-foreground size-6 stroke-1" />
                 ),
                 size: "col-span-12 md:flex-row",
+                href: "https://cube.octa.computer/",
               },
             ]}
           />
@@ -353,12 +234,7 @@ export default function MCPServerPage() {
             description="Uncompromising capability beyond the cloud you know."
             visual={<RisingLargeIllustration />}
           />
-          <Stats2
-          className="py-8 sm:py-12 md:py-6"
-            items={stats2Items.length ? stats2Items : [
-              { value: "…", label: "Loading...", description: "" },
-            ]}
-          />
+          <NetworkStatsStrip className="py-8 sm:py-12 md:py-6" />
                    <div className="relative w-full h-[300px] md:h-[500px] bg-off-black">
             <video
               src="/img/CPU.mp4"
@@ -366,9 +242,8 @@ export default function MCPServerPage() {
               loop
               muted
               playsInline
-              poster="/images/services-hero.webp"
+              poster="/og.jpg"
               controls={false}
-              onContextMenu={(e) => e.preventDefault()}  // disable right click
               className="absolute w-full h-full object-contain mix-blend-lighten"
             >
               Your browser does not support the video tag.
@@ -393,7 +268,7 @@ export default function MCPServerPage() {
                     <Screenshot
                       srcLight="/img/marketplace1.png"
                       srcDark="/img/marketplace1.png"
-                      alt="TodoPluto creating tasks screenshot"
+                      alt="OctaSpace marketplace application selection screenshot"
                       width={1248}
                       height={765}
                     />
@@ -413,7 +288,7 @@ export default function MCPServerPage() {
                     <Screenshot
                       srcLight="/img/node.png"
                       srcDark="/img/node.png"
-                      alt="TodoPluto organization screenshot"
+                      alt="OctaSpace compute node selection screenshot"
                       width={1248}
                       height={765}
                     />
@@ -435,7 +310,7 @@ export default function MCPServerPage() {
                     <Screenshot
                       srcLight="/img/configure.png"
                       srcDark="/img/configure.png"
-                      alt="TodoPluto sharing screenshot"
+                      alt="OctaSpace deployment configuration screenshot"
                       width={1248}
                       height={765}
                     />
@@ -513,22 +388,14 @@ export default function MCPServerPage() {
               loop
               muted
               playsInline
-              poster="/images/services-hero.webp"
+              poster="/og.jpg"
               controls={false}
-              onContextMenu={(e) => e.preventDefault()}  // disable right click
               className="absolute w-full h-full object-contain mix-blend-lighten"
             >
               Your browser does not support the video tag.
             </video>
           </div>
-          {!loadingStats && (
-          <Pricing
-            title="GPU rental plans for all workloads"
-            description="Choose from the latest NVIDIA GPUs with live hourly pricing."
-            plans={plans}
-            className="pt-0 pb-8"
-          />
-        )}
+          <NetworkPricing className="pt-0 pb-8" />
          {/*<CarouselLarge></CarouselLarge>*/}
           <FeatureStickyRight
               title=""
@@ -634,7 +501,7 @@ export default function MCPServerPage() {
             buttons={[
               {
                 text: "Get Started",
-                href: "https://marketplace.octa.space/",
+                href: "https://cube.octa.computer/marketplace/compute",
                 variant: "glow",
               },
               {
@@ -645,6 +512,7 @@ export default function MCPServerPage() {
             ]}
           />
         </main>
+        </NetworkSnapshotProvider>
         <Footer
         logo={<OctaLogo className="h-8 w-auto" />}
         columns={[
@@ -652,7 +520,7 @@ export default function MCPServerPage() {
             title: "Product",
             links: [
               { text: "OctaRender", href: "https://render.octa.space/" },
-              { text: "Marketplace", href: "https://marketplace.octa.space/" },
+              { text: "Marketplace", href: "https://cube.octa.computer/marketplace/compute" },
               { text: "OctaSpace Cube", href: "https://cube.octa.computer/" },
               { text: "Documentation", href: "https://docs.octa.space/" },
             ],

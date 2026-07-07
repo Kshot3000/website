@@ -76,9 +76,6 @@ export const metadata: Metadata = {
     icon: "/favicon.svg",
     apple: "/apple-touch-icon.png",
   },
-  alternates: {
-    canonical: siteConfig.url,
-  },
 };
 
 export default function RootLayout({
@@ -86,6 +83,35 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const organizationJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "OctaSpace",
+    url: "https://octa.space/",
+    logo: "https://octa.space/og.jpg",
+    sameAs: [
+      "https://x.com/octa_space",
+      "https://t.me/octa_space",
+      "https://discord.gg/octaspace",
+      "https://github.com/octaspace",
+      "https://reddit.com/r/octaspace",
+      "https://blog.octa.space/",
+      "https://www.instagram.com/octaspace.official",
+    ],
+    contactPoint: {
+      "@type": "ContactPoint",
+      email: "hello@octa.space",
+      contactType: "customer support",
+    },
+  };
+
+  const websiteJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "OctaSpace",
+    url: "https://octa.space/",
+  };
+
   return (
     <html lang="en" style={{ colorScheme: "dark" }} className="dark">
       <body className={`${inter.className} bg-background antialiased`}>
@@ -103,48 +129,18 @@ export default function RootLayout({
           `}
         </Script>
         
-        {/* JSON-LD Schema Markup */}
-        <Script id="json-ld-organization" type="application/ld+json" strategy="afterInteractive">
-          {`
-          {
-            "@context": "https://schema.org",
-            "@type": "Organization",
-            "name": "OctaSpace",
-            "url": "https://octa.space/",
-            "logo": "https://octa.space/og.jpg",
-            "sameAs": [
-              "https://x.com/octa_space",
-              "https://t.me/octa_space",
-              "https://discord.gg/octaspace",
-              "https://github.com/octaspace",
-              "https://reddit.com/r/octaspace",
-              "https://blog.octa.space/",
-              "https://www.instagram.com/octaspace.official"
-            ],
-            "contactPoint": {
-                "@type": "ContactPoint",
-                "email": "hello@octa.space",
-                "contactType": "customer support"
-            }
-          }
-          `}
-        </Script>
-
-        <Script id="json-ld-website" type="application/ld+json" strategy="afterInteractive">
-          {`
-          {
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            "name": "OctaSpace",
-            "url": "https://octa.space/",
-            "potentialAction": {
-              "@type": "SearchAction",
-              "target": "https://octa.space/search?q={search_term_string}",
-              "query-input": "required name=search_term_string"
-            }
-          }
-          `}
-        </Script>
+        <script
+          id="json-ld-organization"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationJsonLd),
+          }}
+        />
+        <script
+          id="json-ld-website"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+        />
 
         <ThemeProvider>{children}</ThemeProvider>
       </body>

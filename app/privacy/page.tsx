@@ -1,12 +1,34 @@
-import React from "react";
+import type { Metadata } from "next";
+import type { CSSProperties } from "react";
+
 import Navbar from "../../components/sections/navbar/sticky";
 import Footer from "../../components/sections/footer/5-columns";
 import OctaLogo from "../../components/logos/octa";
 import { SocialIcons } from "../../components/sections/footer/socials";
+import { siteConfig } from "@/config/site";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Privacy Policy - OctaSpace",
   description: "Learn how OctaSpace collects, uses, and safeguards user information.",
+  alternates: {
+    canonical: new URL("/privacy", siteConfig.url).toString(),
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: siteConfig.name,
+    url: new URL("/privacy", siteConfig.url).toString(),
+    title: "Privacy Policy - OctaSpace",
+    description: "Learn how OctaSpace collects, uses, and safeguards user information.",
+    images: [
+      {
+        url: siteConfig.ogImage,
+        width: 1200,
+        height: 630,
+        alt: siteConfig.name,
+      },
+    ],
+  },
 };
 
 export default function PrivacyPolicyPage() {
@@ -21,7 +43,7 @@ export default function PrivacyPolicyPage() {
           "--background": "var(--background-octa)",
           "--muted": "var(--background-titanium)",
           "--radius": "var(--radius-default)",
-        } as React.CSSProperties
+        } as CSSProperties
       }
     >
       {/* Navbar */}
@@ -31,7 +53,7 @@ export default function PrivacyPolicyPage() {
         actions={[
           {
             text: "Get Started",
-            href: "https://marketplace.octa.space/",
+            href: "https://cube.octa.computer/marketplace/compute",
             isButton: true,
             variant: "outline",
           },
@@ -127,7 +149,7 @@ export default function PrivacyPolicyPage() {
             title: "Product",
             links: [
               { text: "OctaRender", href: "https://render.octa.space/" },
-              { text: "Marketplace", href: "https://marketplace.octa.space/" },
+              { text: "Marketplace", href: "https://cube.octa.computer/marketplace/compute" },
               { text: "OctaSpace Cube", href: "https://cube.octa.computer/" },
               { text: "Documentation", href: "https://docs.octa.space/" },
             ],

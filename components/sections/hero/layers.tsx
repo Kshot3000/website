@@ -53,7 +53,7 @@ export default function Hero({
   ),
   buttons = [
     {
-      href: "https://marketplace.octa.space/",
+      href: "https://cube.octa.computer/marketplace/compute",
       text: "Get Started",
       variant: "glow",
     },
@@ -65,7 +65,7 @@ export default function Hero({
       <Screenshot
         srcLight="/img/VPNmarket.png"
         srcDark="/img/VPNmarket.png"
-        alt="Launch UI app screenshot"
+        alt="OctaVPN marketplace screenshot"
         width={1248}
         height={765}
       />
@@ -74,7 +74,7 @@ export default function Hero({
       <Screenshot
         srcLight="/img/nodes.png"
         srcDark="/img/nodes.png"
-        alt="Launch UI app screenshot"
+        alt="OctaSpace node marketplace screenshot"
         width={1248}
         height={765}
       />
@@ -83,7 +83,7 @@ export default function Hero({
       <Screenshot
         srcLight="/img/marketplace1.png"
         srcDark="/img/marketplace1.png"
-        alt="Launch UI app screenshot"
+        alt="OctaSpace application marketplace screenshot"
         width={1248}
         height={765}
       />

@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Button } from "./button";
+import { Button, type ButtonProps } from "./button";
 import Link from "next/link";
 import { cva, type VariantProps } from "class-variance-authority";
 
@@ -28,7 +28,7 @@ export interface PricingColumnProps
   price: number;
   priceNote?: string; // e.g., "/hr"
   cta: {
-    variant: "outline" | "default";
+    variant: ButtonProps["variant"];
     label: string;
     href: string;
   };

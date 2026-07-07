@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import Glow from "../ui/glow";
 import SshIcon from "../logos/ssh";

@@ -39,9 +39,9 @@ export default function Navbar({
   name = "Launch UI",
   homeUrl = "https://octa.space/",
   mobileLinks = [
-    { text: "Get Started", href: "https://marketplace.octa.space/" },
+    { text: "Get Started", href: "https://cube.octa.computer/marketplace/compute" },
     { text: "Documentation", href: "https://docs.octa.space/" },
-    { text: "OctaSpace Marketplace", href: "https://marketplace.octa.space/" },
+    { text: "OctaSpace Marketplace", href: "https://cube.octa.computer/marketplace/compute" },
     { text: "OctaRender", href: "https://render.octa.computer/" },
     { text: "OctaSpace Cube", href: "https://cube.octa.computer" },
 

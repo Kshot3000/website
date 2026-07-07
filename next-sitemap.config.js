@@ -2,6 +2,7 @@
 module.exports = {
     siteUrl: 'https://octa.space', // your main domain
     generateRobotsTxt: true,        // generates robots.txt automatically
+    outDir: './out',
     sitemapSize: 5000,               // optional, for large sites
     changefreq: 'daily',
     priority: 0.7,

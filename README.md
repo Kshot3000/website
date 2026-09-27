@@ -1,5 +1,7 @@
 # OctaSpace — Website
 
+> Kyle's fork of [octaspace/website](https://github.com/octaspace/website) — used as a workspace for upstream pull-request contributions.
+
 Лендинг [OctaSpace](https://octa.space) — децентрализованной GPU-облачной платформы для AI, рендеринга и cloud-вычислений. Построен на базе шаблона **Launch UI**.
 
 ## Стек технологий
